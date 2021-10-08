@@ -17,3 +17,7 @@
 [How to make a Tank at home - Remote Control RC Bridge Tank - Tank Launched Bridge (AVLB)](https://www.youtube.com/watch?v=wRsw_Z6ClQk) 
 
 [RC Bridge Tank DIY - Military Vehicles, Bridge Layer Tank Remote Control from Cardboard](https://www.youtube.com/watch?v=1kziHEyjo-Y)
+
+## 參考商家
+
+[opplpm](https://shopee.tw/opplpm?categoryId=100639&itemId=1217552113)
