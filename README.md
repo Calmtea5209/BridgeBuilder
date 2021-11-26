@@ -7,6 +7,13 @@
 + 雷達感應
   1. 以伺服馬達帶動
 + 建橋功能
+## APP Inventor Part
+
+### Appreance
+![alt text](https://github.com/Calmtea5209/BridgeBuilder/blob/main/AppInventor/appearance.jpg)
+
+### Code
+![alt text](https://github.com/Calmtea5209/BridgeBuilder/blob/main/AppInventor/code.png)
 
 ## 參考資料
 
