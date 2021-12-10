@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include <FirebaseESP32.h>
 const char ssid[] = "MICS_LAB";
 const char pass[] = "nlhsmics306";
 #define A_1A 36
@@ -9,31 +10,21 @@ const char pass[] = "nlhsmics306";
 #define C_1B 33
 #define D_1A 25 
 #define D_1B 26 
+/* 1. Define the API Key */
+#define API_KEY "AIzaSyBgWVxIW9gwANRMVaRMvIR9-swS3P9Jq8Q"
+/* 2. Define the RTDB URL */
+#define DATABASE_URL "https://bridgebuilder-1f47d-default-rtdb.firebaseio.com/" //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
+/* 3. Define the user Email and password that alreadey registerd or added in your project */
+#define DATABASE_SECRET "yFry1xgDH4sdihZtkBikL2U812rOdzOoZpXpKBle"
+/* 4. Define FirebaseESP8266 data object for data sending and receiving */
+FirebaseData fbdo;
+/* 5. Define the FirebaseAuth data for authentication data */
+FirebaseAuth auth;
+/* 6. Define the FirebaseConfig data for config data */
+FirebaseConfig config;
+
 void WiFi_Setup(){
   WiFi.disconnect();//Disconnect
-  /*delay(100);
-  Serial.println("Setup done");
-
-  Serial.println("scan start");
-  int n = WiFi.scanNetworks();//Scan network
-  Serial.println("scan done");
-  if (n == 0) {
-      Serial.println("no networks found");
-  } else {
-      Serial.print(n);
-      Serial.println(" networks found");
-      for (int i = 0; i < n; ++i) {
-          //顯示無線網路SSID, RSSI, 加密
-          Serial.print(i + 1);
-          Serial.print(": ");
-          Serial.print(WiFi.SSID(i));
-          Serial.print(" (");
-          Serial.print(WiFi.RSSI(i));
-          Serial.print(")");
-          Serial.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN)?" ":"*");
-          delay(10);
-      }
-  }*/
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid,pass);
   Serial.print("WiFi connecting");
@@ -109,4 +100,72 @@ void Rod_A_Backward(){
 void Rod_B_Backward(){
   digitalWrite(B_1A,LOW);
   digitalWrite(B_1B,HIGH);
+}
+void Move(){
+  if (Firebase.getString(fbdo, "/BridgeBuilder/Direction")) {
+      //Success
+      Serial.print("Direction: ");
+      Serial.println(fbdo.stringData());
+      if(fbdo.stringData() == "1"){
+        Forward();
+      }
+      else if(fbdo.stringData() == "2"){
+        TurnRight();
+      }
+      else if(fbdo.stringData() == "3"){
+        Backward();
+      }
+      else if(fbdo.stringData() == "4"){
+        TurnLeft();
+      }
+      else{
+        Stop();
+      }
+  }
+  else {
+      //Failed?, get the error reason from fbdo
+      Serial.print("Error in getInt, ");
+      Serial.println(fbdo.errorReason());
+  }
+}
+void BridgeWork(){
+  if (Firebase.getString(fbdo, "/BridgeBuilder/BridgeStatus")) {
+      //Success
+      //Serial.print("BridgeStatus: ");
+      String s = fbdo.stringData();
+      Serial.println(s);
+      if(s == "1"){ //Put the bridge down
+        if (Firebase.setString(fbdo, "/Security_System_firebase/BridgeStatus", " -1")) {
+              //Success
+              Serial.println("Set String data success");
+        } 
+        else {
+            //Failed?, get the error reason from fbdo
+
+            Serial.print("Error in setString, ");
+            Serial.println(fbdo.errorReason());
+        }
+        Rod_A_Forward();
+        delay(200);
+      }
+      else if(fbdo.stringData() == "2"){ //Take the bridge back
+        if (Firebase.setString(fbdo, "/Security_System_firebase/BridgeStatus", "-2")) {
+              //Success
+              Serial.println("Set String data success");
+        } 
+        else {
+            //Failed?, get the error reason from fbdo
+
+            Serial.print("Error in setString, ");
+            Serial.println(fbdo.errorReason());
+        }
+        Rod_A_Backward();
+        delay(200);
+      }
+  }
+  else {
+      //Failed?, get the error reason from fbdo
+      Serial.print("Error in getInt, ");
+      Serial.println(fbdo.errorReason());
+  }
 }
