@@ -22,7 +22,7 @@ FirebaseData fbdo;
 FirebaseAuth auth;
 /* 6. Define the FirebaseConfig data for config data */
 FirebaseConfig config;
-
+int Degree = 0;
 void WiFi_Setup(){
   WiFi.disconnect();//Disconnect
   WiFi.mode(WIFI_STA);
@@ -106,20 +106,25 @@ void Move(){
       //Success
       Serial.print("Direction: ");
       Serial.println(fbdo.stringData());
-      if(fbdo.stringData() == "1"){
+      if(fbdo.stringData() == "\"1\""){
         Forward();
+        Serial.println("Forward");
       }
-      else if(fbdo.stringData() == "2"){
+      else if(fbdo.stringData() == "\"2\""){
         TurnRight();
+        Serial.println("TurnRight");
       }
-      else if(fbdo.stringData() == "3"){
+      else if(fbdo.stringData() == "\"3\""){
         Backward();
+        Serial.println("Backward");
       }
-      else if(fbdo.stringData() == "4"){
+      else if(fbdo.stringData() == "\"4\""){
         TurnLeft();
+        Serial.println("TurnLeft");
       }
       else{
         Stop();
+        Serial.println("Stop");
       }
   }
   else {
@@ -132,12 +137,25 @@ void BridgeWork(){
   if (Firebase.getString(fbdo, "/BridgeBuilder/BridgeStatus")) {
       //Success
       //Serial.print("BridgeStatus: ");
-      String s = fbdo.stringData();
-      Serial.println(s);
-      if(s == "1"){ //Put the bridge down
+      if(fbdo.stringData() == "\"1\""){ //Put the bridge down
         if (Firebase.setString(fbdo, "/Security_System_firebase/BridgeStatus", " -1")) {
               //Success
-              Serial.println("Set String data success");
+              Serial.println("Set BridgeStatus:-1");
+              while(true){ //Stop when reach certain degree
+                  Rod_A_Forward();
+                  delay(10);
+                  Degree++;
+                  if (Firebase.getString(fbdo, "/BridgeBuilder/Direction")){
+                      if(fbdo.stringData() == "\"-999\""){
+                        while(true){
+                          if (Firebase.setString(fbdo, "/Security_System_firebase/Degree", Degree)){ //Upload current degree of revolving
+                              break;
+                          }
+                        }
+                         break;
+                      }
+                  }
+              }
         } 
         else {
             //Failed?, get the error reason from fbdo
@@ -145,13 +163,27 @@ void BridgeWork(){
             Serial.print("Error in setString, ");
             Serial.println(fbdo.errorReason());
         }
-        Rod_A_Forward();
         delay(200);
       }
-      else if(fbdo.stringData() == "2"){ //Take the bridge back
+      else if(fbdo.stringData() == "\"2\""){ //Take the bridge back
         if (Firebase.setString(fbdo, "/Security_System_firebase/BridgeStatus", "-2")) {
               //Success
               Serial.println("Set String data success");
+              while(true){
+                  Rod_A_Backward();
+                  delay(10);
+                  Degree--;
+                  if (Firebase.getString(fbdo, "/BridgeBuilder/Direction")){
+                      if(fbdo.stringData() == "\"-999\""){
+                        while(true){
+                          if (Firebase.setString(fbdo, "/Security_System_firebase/Degree", Degree)){
+                              break;
+                          }
+                        }
+                         break;
+                      }
+                  }
+              }
         } 
         else {
             //Failed?, get the error reason from fbdo
