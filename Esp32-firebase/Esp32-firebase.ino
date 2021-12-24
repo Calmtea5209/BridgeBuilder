@@ -4,7 +4,7 @@
 #include <FirebaseESP32.h>
 
 //Provide the token generation process info.
-#include "addons/TokenHelper.h"
+//#include "addons/TokenHelper.h"
 
 /* 1. Define the WiFi credentials */
 #define WIFI_SSID "MICS_LAB"
@@ -118,7 +118,7 @@ void Task1code(void * pvParameters) {
 //第2個任務LED2每隔 700 ms閃爍
 void Task2code(void * pvParameters) {
     for (;;) { //任務函數必須無限循環執行，如果離開函式會自動RESET
-        //blablabla
+        Serial.println("HaHa");
     }
 }
 
