@@ -23,6 +23,7 @@ FirebaseAuth auth;
 /* 6. Define the FirebaseConfig data for config data */
 FirebaseConfig config;
 int Degree = 0;
+String str;
 void WiFi_Setup(){
   WiFi.disconnect();//Disconnect
   WiFi.mode(WIFI_STA);
@@ -148,8 +149,9 @@ void BridgeWork(){
                   if (Firebase.getString(fbdo, "/BridgeBuilder/Direction")){
                       if(fbdo.stringData() == "\"-999\""){
                         while(true){
-                          if (Firebase.setString(fbdo, "/Security_System_firebase/Degree", Degree)){ //Upload current degree of revolving
-                              break;
+                          str = String(Degree);
+                          if (Firebase.setString(fbdo, "/Security_System_firebase/Degree", str)){ //Upload current degree of revolving
+                              //break;
                           }
                         }
                          break;
@@ -176,7 +178,8 @@ void BridgeWork(){
                   if (Firebase.getString(fbdo, "/BridgeBuilder/Direction")){
                       if(fbdo.stringData() == "\"-999\""){
                         while(true){
-                          if (Firebase.setString(fbdo, "/Security_System_firebase/Degree", Degree)){
+                          str = String(Degree);
+                          if (Firebase.setString(fbdo, "/Security_System_firebase/Degree", str)){
                               break;
                           }
                         }
