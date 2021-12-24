@@ -27,8 +27,8 @@ FirebaseAuth auth;
 /* 7. Define the FirebaseConfig data for config data */
 FirebaseConfig config;
 
-#define A_1A 36
-#define A_1B 39
+#define A_1A 22
+#define A_1B 23
 #define B_1A 34
 #define B_1B 35
 #define C_1A 32

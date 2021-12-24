@@ -30,10 +30,7 @@ void setup() {
         1); /* 指定此任務的執行核心(0或1) */
 }
 
-void loop() {
-    Move();
-    BridgeWork();
-}
+void loop() {}
 
 void Task1code(void * pvParameters) {
     for (;;) { //任務函數必須無限循環執行，如果離開函式會自動RESET
