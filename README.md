@@ -9,7 +9,7 @@
 + 建橋功能
 ## APP Inventor Part
 
-### Appreance
+### Appearance
 ![alt text](https://github.com/Calmtea5209/BridgeBuilder/blob/main/AppInventor/appearance.jpg)
 
 ### Code
