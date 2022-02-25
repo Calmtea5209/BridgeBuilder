@@ -4,10 +4,15 @@
 
 ### 最後結果
 
-+ 雷達感應
-  1. 以伺服馬達帶動
++ 手機APP遙控操作車體、造橋功能
 + 建橋功能
+  1. 造橋功能設計為一鍵式完成
+  
 ## APP Inventor Part
+
+
+## ESP32 Part
+
 
 ### Appearance
 ![alt text](https://github.com/Calmtea5209/BridgeBuilder/blob/main/AppInventor/appearance.jpg)
