@@ -8,11 +8,8 @@
 + 建橋功能
   1. 造橋功能設計為一鍵式完成
   
+
 ## APP Inventor Part
-
-
-## ESP32 Part
-
 
 ### Appearance
 ![alt text](https://github.com/Calmtea5209/BridgeBuilder/blob/main/AppInventor/appearance.jpg)
@@ -29,6 +26,10 @@
 [How to make a Tank at home - Remote Control RC Bridge Tank - Tank Launched Bridge (AVLB)](https://www.youtube.com/watch?v=wRsw_Z6ClQk) 
 
 [RC Bridge Tank DIY - Military Vehicles, Bridge Layer Tank Remote Control from Cardboard](https://www.youtube.com/watch?v=1kziHEyjo-Y)
+
+[L9110S motor control](https://blog.jmaker.com.tw/l9110s/)
+
+
 
 ## 參考商家
 
