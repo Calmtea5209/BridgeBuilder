@@ -6,8 +6,8 @@
 #include "addons/TokenHelper.h"
 
 /* 1. Define the WiFi credentials */
-#define WIFI_SSID "MICS_LAB"
-#define WIFI_PASSWORD "nlhsmics306"
+#define WIFI_SSID "Tea"
+#define WIFI_PASSWORD "HELLO5209"
 
 /* 2. Define the API Key */
 #define API_KEY "AIzaSyBgWVxIW9gwANRMVaRMvIR9-swS3P9Jq8Q"
@@ -105,6 +105,7 @@ void ReceiveFromFirebase() {
         //Failed?, get the error reason from fbdo
         Serial.print("Error in getInt, ");
         Serial.println(fbdo.errorReason());
+        Direction = "fuck up";
     }
 
     if (Firebase.getString(fbdo, "/BridgeBuilder/BridgeStatus")) {
@@ -117,6 +118,7 @@ void ReceiveFromFirebase() {
         //Failed?, get the error reason from fbdo
         Serial.print("Error in getInt, ");
         Serial.println(fbdo.errorReason());
+        BridgeStatus = "fuck up";
     }
 }
 
@@ -176,25 +178,32 @@ void Rod_B_Backward() {
 }
 
 void Move() {
-    if (Direction == "\"1\"") {
+    if(Direction.length() > 1) {
+        Direction = Direction[1];
+    }
+    if (Direction == "1") {
         Forward();
         Serial.println("Forward");
     } else if (Direction == "2") {
         TurnRight();
         Serial.println("TurnRight");
-    } else if (Direction == "\"3\"") {
+    } else if (Direction == "3") {
         Backward();
         Serial.println("Backward");
-    } else if (Direction == "\"4\"") {
+    } else if (Direction == "4") {
         TurnLeft();
         Serial.println("TurnLeft");
     } else {
+        Stop();
         Serial.println("Stop");
     }
 }
 
 void BridgeWork() {
-    if (BridgeStatus == "\"1\"") { //Put the bridge down
+    if(BridgeStatus.length() > 1) {
+        BridgeStatus = BridgeStatus[1];
+    }
+    if (BridgeStatus == "1") { //Put the bridge down
         if (Firebase.setString(fbdo, "/BridgeBuilder/BridgeStatus", " -1")) {
             //Success
             Serial.println("Set BridgeStatus:-1");
@@ -210,7 +219,7 @@ void BridgeWork() {
             Serial.println(fbdo.errorReason());
         }
         delay(200);
-    } else if (BridgeStatus == "\"2\"") { //Take the bridge back
+    } else if (BridgeStatus == "2") { //Take the bridge back
         if (Firebase.setString(fbdo, "/BridgeBuilder/BridgeStatus", "-2")) {
             //Success
             Serial.println("Set String data success");
