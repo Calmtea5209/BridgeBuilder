@@ -27,14 +27,14 @@ FirebaseAuth auth;
 /* 7. Define the FirebaseConfig data for config data */
 FirebaseConfig config;
 
-#define A_1A 22
-#define A_1B 23
-#define B_1A 34
-#define B_1B 35
-#define C_1A 32
-#define C_1B 33
-#define D_1A 25
-#define D_1B 26
+#define A_1A 21
+#define A_1B 22
+#define B_1A 23
+#define B_1B 25
+#define C_1A 26
+#define C_1B 27
+#define D_1A 32
+#define D_1B 33
 
 int Degree = 0;
 
@@ -124,30 +124,30 @@ void ReceiveFromFirebase() {
 
 void Forward() {
     digitalWrite(A_1A, HIGH);
-    digitalWrite(A_1B, LOW);
+    digitalWrite(A_1B, 255);
     digitalWrite(B_1A, HIGH);
-    digitalWrite(B_1B, LOW);
+    digitalWrite(B_1B, 255);
 }
 
 void Backward() {
     digitalWrite(A_1A, LOW);
-    digitalWrite(A_1B, HIGH);
+    digitalWrite(A_1B, 255);
     digitalWrite(B_1A, LOW);
-    digitalWrite(B_1B, HIGH);
+    digitalWrite(B_1B, 255);
 }
 
 void TurnRight() {
-    digitalWrite(A_1A, HIGH);
-    digitalWrite(A_1B, LOW);
-    digitalWrite(B_1A, LOW);
-    digitalWrite(B_1B, HIGH);
+    digitalWrite(A_1A, LOW);
+    analogWrite(A_1B, LOW);
+    digitalWrite(B_1A, HIGH);
+    analogWrite(B_1B, 255);
 }
 
 void TurnLeft() {
-    digitalWrite(A_1A, LOW);
-    digitalWrite(A_1B, HIGH);
-    digitalWrite(B_1A, HIGH);
-    digitalWrite(B_1B, LOW);
+    digitalWrite(A_1A, HIGH);
+    analogWrite(A_1B, 255);
+    digitalWrite(B_1A, LOW);
+    analogWrite(B_1B, LOW);
 }
 
 void Stop() {
@@ -155,26 +155,30 @@ void Stop() {
     digitalWrite(A_1B, LOW);
     digitalWrite(B_1A, LOW);
     digitalWrite(B_1B, LOW);
+    digitalWrite(C_1A,LOW);
+    digitalWrite(C_1B,LOW);
+    digitalWrite(D_1A,LOW);
+    digitalWrite(D_1B,LOW);
 }
 
 void Rod_A_Forward() {
-    digitalWrite(A_1A, HIGH);
-    digitalWrite(A_1B, LOW);
+    digitalWrite(C_1A, HIGH);
+    digitalWrite(C_1B, 255);
 }
 
 void Rod_B_Forward() {
-    digitalWrite(B_1A, HIGH);
-    digitalWrite(B_1B, LOW);
+    digitalWrite(D_1A, HIGH);
+    digitalWrite(D_1B, 255);
 }
 
 void Rod_A_Backward() {
-    digitalWrite(A_1A, LOW);
-    digitalWrite(A_1B, HIGH);
+    digitalWrite(C_1A, LOW);
+    digitalWrite(C_1B, 255);
 }
 
 void Rod_B_Backward() {
-    digitalWrite(B_1A, LOW);
-    digitalWrite(B_1B, HIGH);
+    digitalWrite(D_1A, LOW);
+    digitalWrite(D_1B, 255);
 }
 
 void Move() {
