@@ -1,3 +1,5 @@
+#include <analogWrite.h>
+
 #include <WiFi.h>
 
 #include <FirebaseESP32.h>
@@ -6,8 +8,8 @@
 #include "addons/TokenHelper.h"
 
 /* 1. Define the WiFi credentials */
-#define WIFI_SSID "Tea"
-#define WIFI_PASSWORD "HELLO5209"
+#define WIFI_SSID "MICS_LAB"
+#define WIFI_PASSWORD "nlhsmics306"
 
 /* 2. Define the API Key */
 #define API_KEY "AIzaSyBgWVxIW9gwANRMVaRMvIR9-swS3P9Jq8Q"
@@ -124,30 +126,30 @@ void ReceiveFromFirebase() {
 
 void Forward() {
     digitalWrite(A_1A, HIGH);
-    digitalWrite(A_1B, 255);
+    digitalWrite(A_1B, LOW);
     digitalWrite(B_1A, HIGH);
-    digitalWrite(B_1B, 255);
+    digitalWrite(B_1B, LOW);
 }
 
 void Backward() {
     digitalWrite(A_1A, LOW);
-    digitalWrite(A_1B, 255);
+    digitalWrite(A_1B, HIGH);
     digitalWrite(B_1A, LOW);
-    digitalWrite(B_1B, 255);
+    digitalWrite(B_1B, HIGH);
 }
 
 void TurnRight() {
-    digitalWrite(A_1A, LOW);
-    analogWrite(A_1B, LOW);
-    digitalWrite(B_1A, HIGH);
-    analogWrite(B_1B, 255);
+    digitalWrite(A_1A, HIGH);
+    digitalWrite(A_1B, LOW);
+    digitalWrite(B_1A, LOW);
+    digitalWrite(B_1B, HIGH);
 }
 
 void TurnLeft() {
-    digitalWrite(A_1A, HIGH);
-    analogWrite(A_1B, 255);
-    digitalWrite(B_1A, LOW);
-    analogWrite(B_1B, LOW);
+    digitalWrite(A_1A, LOW);
+    digitalWrite(A_1B, HIGH);
+    digitalWrite(B_1A, HIGH);
+    digitalWrite(B_1B, LOW);
 }
 
 void Stop() {
