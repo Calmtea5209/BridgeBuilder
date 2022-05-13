@@ -1,5 +1,3 @@
-#include <analogWrite.h>
-
 #include <WiFi.h>
 
 #include <FirebaseESP32.h>
@@ -8,8 +6,8 @@
 #include "addons/TokenHelper.h"
 
 /* 1. Define the WiFi credentials */
-#define WIFI_SSID "MICS_LAB"
-#define WIFI_PASSWORD "nlhsmics306"
+#define WIFI_SSID "Tea"
+#define WIFI_PASSWORD "HELLO5209"
 
 /* 2. Define the API Key */
 #define API_KEY "AIzaSyBgWVxIW9gwANRMVaRMvIR9-swS3P9Jq8Q"
@@ -31,17 +29,14 @@ FirebaseConfig config;
 
 #define A_1A 21
 #define A_1B 22
-#define B_1A 23
-#define B_1B 25
-#define C_1A 26
-#define C_1B 27
-#define D_1A 32
-#define D_1B 33
+
 
 int Degree = 0;
 
 String BridgeStatus;
 String Direction;
+
+int payload;
 
 void WiFi_Setup() {
     WiFi.disconnect(); //Disconnect
@@ -78,22 +73,7 @@ void FirebaseSetup() {
 }
 
 void MotorSetup() {
-    pinMode(A_1A, OUTPUT);
-    pinMode(A_1B, OUTPUT);
-    pinMode(B_1A, OUTPUT);
-    pinMode(B_1B, OUTPUT);
-    pinMode(C_1A, OUTPUT);
-    pinMode(C_1B, OUTPUT);
-    pinMode(D_1A, OUTPUT);
-    pinMode(D_1B, OUTPUT);
-    digitalWrite(A_1A, LOW);
-    digitalWrite(A_1B, LOW);
-    digitalWrite(B_1A, LOW);
-    digitalWrite(B_1B, LOW);
-    digitalWrite(C_1A, LOW);
-    digitalWrite(C_1B, LOW);
-    digitalWrite(D_1A, LOW);
-    digitalWrite(D_1B, LOW);
+   
 }
 
 void ReceiveFromFirebase() {
@@ -124,45 +104,7 @@ void ReceiveFromFirebase() {
     }
 }
 
-void Forward() {
-    digitalWrite(A_1A, HIGH);
-    digitalWrite(A_1B, LOW);
-    digitalWrite(B_1A, HIGH);
-    digitalWrite(B_1B, LOW);
-}
-
-void Backward() {
-    digitalWrite(A_1A, LOW);
-    digitalWrite(A_1B, HIGH);
-    digitalWrite(B_1A, LOW);
-    digitalWrite(B_1B, HIGH);
-}
-
-void TurnRight() {
-    digitalWrite(A_1A, HIGH);
-    digitalWrite(A_1B, LOW);
-    digitalWrite(B_1A, LOW);
-    digitalWrite(B_1B, HIGH);
-}
-
-void TurnLeft() {
-    digitalWrite(A_1A, LOW);
-    digitalWrite(A_1B, HIGH);
-    digitalWrite(B_1A, HIGH);
-    digitalWrite(B_1B, LOW);
-}
-
-void Stop() {
-    digitalWrite(A_1A, LOW);
-    digitalWrite(A_1B, LOW);
-    digitalWrite(B_1A, LOW);
-    digitalWrite(B_1B, LOW);
-    digitalWrite(C_1A,LOW);
-    digitalWrite(C_1B,LOW);
-    digitalWrite(D_1A,LOW);
-    digitalWrite(D_1B,LOW);
-}
-
+/*
 void Rod_A_Forward() {
     digitalWrite(C_1A, HIGH);
     digitalWrite(C_1B, 255);
@@ -182,26 +124,30 @@ void Rod_B_Backward() {
     digitalWrite(D_1A, LOW);
     digitalWrite(D_1B, 255);
 }
-
+*/
 void Move() {
     if(Direction.length() > 1) {
         Direction = Direction[1];
     }
-    if (Direction == "1") {
-        Forward();
-        Serial.println("Forward");
-    } else if (Direction == "2") {
-        TurnRight();
-        Serial.println("TurnRight");
-    } else if (Direction == "3") {
-        Backward();
-        Serial.println("Backward");
-    } else if (Direction == "4") {
-        TurnLeft();
-        Serial.println("TurnLeft");
+    if(BridgeStatus.length() > 1) {
+        BridgeStatus = BridgeStatus[1];
+        
+    }
+    if (Direction == "1") {  //forward
+      payload = 10 + int(BridgeStatus-'0');
+      Serial.println(payload); 
+    } else if (Direction == "2") {  //right
+      payload = 20 + int(BridgeStatus-'0');
+      Serial.println(payload);
+    } else if (Direction == "3") {  //backward
+      payload = 30 + int(BridgeStatus-'0');
+      Serial.println(payload);
+    } else if (Direction == "4") {  //left
+      payload = 40 + int(BridgeStatus-'0');
+      Serial.println(payload);
     } else {
-        Stop();
-        Serial.println("Stop");
+      payload = 50 + int(BridgeStatus-'0');
+      Serial.println(payload);
     }
 }
 
@@ -210,7 +156,11 @@ void BridgeWork() {
         BridgeStatus = BridgeStatus[1];
     }
     if (BridgeStatus == "1") { //Put the bridge down
+        payload = (payload/10)*10 + 1;
+        Serial.println(payload);
         if (Firebase.setString(fbdo, "/BridgeBuilder/BridgeStatus", " -1")) {
+            payload = (payload/10)*10 + 2;
+            Serial.println(payload);
             //Success
             Serial.println("Set BridgeStatus:-1");
             /*while (true) { //Stop when reach certain degree
@@ -226,7 +176,11 @@ void BridgeWork() {
         }
         delay(200);
     } else if (BridgeStatus == "2") { //Take the bridge back
+        payload = (payload/10)*10 + 3;
+        Serial.println(payload);
         if (Firebase.setString(fbdo, "/BridgeBuilder/BridgeStatus", "-2")) {
+            payload = (payload/10)*10 + 4;
+            Serial.println(payload);
             //Success
             Serial.println("Set String data success");
             /*while(true) {
@@ -239,7 +193,7 @@ void BridgeWork() {
             Serial.print("Error in setString, ");
             Serial.println(fbdo.errorReason());
         }
-        Rod_A_Backward();
+        //Rod_A_Backward();
         delay(200);
     }
 }

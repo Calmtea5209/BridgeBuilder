@@ -7,15 +7,9 @@ void setup() {
     MotorSetup();
 }
 
-int it = 0;
-
 void loop() {
+    payload = 0;
     Move();
     BridgeWork();
-    delay(10);
-    if(it >= 10) {
-      ReceiveFromFirebase();
-      it = 0;
-    }
-    it++;
+    ReceiveFromFirebase();
 }
